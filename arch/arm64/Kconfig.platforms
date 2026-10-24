@@ -381,6 +381,12 @@ config MACH_XIAOMI_C6
 	help
 	  This enables support for Xiaomi Redmi Note 4(X).
 
+config MACH_XIAOMI_OXYGEN
+	bool "Oxygen board"
+	select MACH_XIAOMI_MSM8953
+	help
+	  This enables support for Xiaomi Mi Max 2 (oxygen).
+
 endchoice
 
 endif

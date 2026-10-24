@@ -22,6 +22,10 @@
 #include <linux/regulator/consumer.h>
 #include <linux/leds-aw2013.h>
 
+#if defined(CONFIG_MACH_XIAOMI_OXYGEN) && defined(CONFIG_BOOT_INFO)
+#include <asm/bootinfo.h>
+#endif
+
 /* register address */
 #define AW_REG_RESET			0x00
 #define AW_REG_GLOBAL_CONTROL		0x01
@@ -420,6 +424,12 @@ static int aw2013_led_parse_child_node(struct aw2013_led *led_array,
 	struct aw2013_platform_data *pdata;
 	int rc = 0, parsed_leds = 0;
 
+#if defined(CONFIG_MACH_XIAOMI_OXYGEN) && defined(CONFIG_BOOT_INFO)
+	u32 hw_version;
+
+	hw_version = get_hw_version();
+#endif
+
 	for_each_child_of_node(node, temp) {
 		led = &led_array[parsed_leds];
 		led->client = led_array->client;
@@ -442,6 +452,21 @@ static int aw2013_led_parse_child_node(struct aw2013_led *led_array,
 				"Failure reading led name, rc = %d\n", rc);
 			goto free_pdata;
 		}
+
+#if defined(CONFIG_MACH_XIAOMI_OXYGEN) && defined(CONFIG_BOOT_INFO)
+		/* Only on Oxygen P3C version hardware, button backlight is
+		 * driven by aw2013.
+		 */
+		if ((strcmp(led->cdev.name, "button-backlight") == 0) &&
+		    hw_version != 0x180) {
+			dev_err(&led->client->dev,
+				"hw_version 0x%x not support aw2013 button-backlight\n",
+				hw_version);
+			devm_kfree(&led->client->dev,
+				led_array[parsed_leds].pdata);
+			continue;
+		}
+#endif
 
 		rc = of_property_read_u32(temp, "aw2013,id",
 			&led->id);

@@ -1216,7 +1216,11 @@ static void gbam_debugfs_init(void)
 }
 static void gbam_debugfs_remove(void)
 {
+	if (!gbam_dent)
+		return;
+
 	debugfs_remove_recursive(gbam_dent);
+	gbam_dent = NULL;
 }
 #else
 static inline void gbam_debugfs_init(void) {}

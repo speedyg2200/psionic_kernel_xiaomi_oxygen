@@ -843,6 +843,12 @@ config QPNP_MISC
 	  and the driver provides an API to check if this interrupt
 	  is available on the current PMIC chip.
 
+config GPIO13_RF
+	tristate "setting gpio13 for RF"
+	default n
+	help
+	 Enable this module if dynamically change RF paramaters by monitor status of GPIO13.
+
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"
@@ -855,6 +861,7 @@ source "drivers/misc/mic/Kconfig"
 source "drivers/misc/genwqe/Kconfig"
 source "drivers/misc/echo/Kconfig"
 source "drivers/misc/cxl/Kconfig"
+source "drivers/misc/type-c/Kconfig"
 source "drivers/misc/fpr_FingerprintCard/Kconfig"
 endmenu
 

@@ -282,6 +282,9 @@ struct msm_fb_data_type {
 
 	u32 dest;
 	struct fb_info *fbi;
+#if defined(CONFIG_MACH_XIAOMI_OXYGEN)
+	int blank;
+#endif
 
 	int idle_time;
 	u32 idle_state;
