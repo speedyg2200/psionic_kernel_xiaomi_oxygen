@@ -1,4 +1,4 @@
-name: Build oxygen kernel
+name: Build Android Kernel
 
 on:
   push:
@@ -37,8 +37,7 @@ jobs:
 
       - name: Prepare Output Directory
         run: |
-          sudo mkdir -p /build-oxygen
-          sudo chown -R $USER:$USER /build-oxygen
+          mkdir -p ~/build-oxygen
 
       - name: Clone Android Kernel Tools
         run: |
@@ -54,5 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Image.gz-dtb
-          path: /home/runner/build-oxygen/arch/arm64/Image.gz-dtb
+          path: |
+            **/Image.gz-dtb
+            /home/runner/build-oxygen/arch/arm64/Image.gz-dtb
           if-no-files-found: error
