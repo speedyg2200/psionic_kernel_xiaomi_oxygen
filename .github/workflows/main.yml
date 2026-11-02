@@ -19,14 +19,13 @@ jobs:
           submodules: recursive
 
       - name: Free Up Disk Space
-        uses: jlumbroso/free-disk-space@v1
-        with:
-          tool-cache: false
-          android: false
-          dotnet: false
-          ghc: false
-          rust: false
-          docker: true
+        run: |
+          echo "Removing heavy preinstalled software to free disk space..."
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          df -h
 
       - name: Install Dependencies
         run: |
@@ -38,16 +37,15 @@ jobs:
 
       - name: Prepare Toolchain & Output Directories
         run: |
-          # Setup ~/toolchains (expanding ~ properly to /home/runner)
           mkdir -p ~/toolchains/android-kernel-tools
           sudo chown -R $USER:$USER /home/runner/toolchains
 
-          # Prepare output directory
           sudo mkdir -p /build-oxygen
           sudo chown -R $USER:$USER /build-oxygen
 
       - name: Build Kernel
         run: |
+          cd psionic_kernel_xiaomi_oxygen
           chmod +x ./build.sh
           ./build.sh
 
