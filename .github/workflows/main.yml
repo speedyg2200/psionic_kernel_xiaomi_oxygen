@@ -45,7 +45,6 @@ jobs:
 
       - name: Build Kernel
         run: |
-          cd psionic_kernel_xiaomi_oxygen
           chmod +x ./build.sh
           ./build.sh
 
