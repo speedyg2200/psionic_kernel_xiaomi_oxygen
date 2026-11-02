@@ -35,13 +35,15 @@ jobs:
             cpio rsync kmod perl python3 python-is-python3 libssl-dev libelf-dev pahole \
             libncurses-dev zlib1g-dev libyaml-dev lz4 zstd device-tree-compiler adb fastboot
 
-      - name: Prepare Toolchain & Output Directories
+      - name: Prepare Output Directory
         run: |
-          mkdir -p ~/toolchains/android-kernel-tools
-          sudo chown -R $USER:$USER /home/runner/toolchains
-
           sudo mkdir -p /build-oxygen
           sudo chown -R $USER:$USER /build-oxygen
+
+      - name: Clone Android Kernel Tools
+        run: |
+          mkdir -p ~/toolchains
+          git clone https://github.com/prabhatkrmishra/android-kernel-tools.git ~/toolchains/android-kernel-tools
 
       - name: Build Kernel
         run: |
