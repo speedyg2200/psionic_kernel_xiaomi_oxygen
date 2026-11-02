@@ -54,5 +54,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Image.gz-dtb
-          path: ~/build-oxygen/arch/arm64/Image.gz-dtb
+          path: /home/runner/build-oxygen/arch/arm64/Image.gz-dtb
           if-no-files-found: error
