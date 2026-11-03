@@ -1,4 +1,4 @@
-name: Build Android Kernel
+name: Build oxygen Kernel
 
 on:
   push:
@@ -49,11 +49,16 @@ jobs:
           chmod +x ./build.sh
           ./build.sh
 
+      - name: Copy Artifact to Workspace
+        run: |
+          mkdir -p ./artifact_out
+          # Copy from whichever location your build script wrote it to
+          cp -fv /home/runner/build-oxygen/arch/arm64/Image.gz-dtb ./artifact_out/ || true
+          cp -fv ~/build-oxygen/arch/arm64/Image.gz-dtb ./artifact_out/ || true
+
       - name: Upload Kernel Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Image.gz-dtb
-          path: |
-            **/Image.gz-dtb
-            /home/runner/build-oxygen/arch/arm64/Image.gz-dtb
+          path: ./artifact_out/Image.gz-dtb
           if-no-files-found: error
